@@ -27,7 +27,6 @@ public:
         }
         if (ret.size() < numCourses) {
             ret.clear();
-            return ret;
         }
         return ret;
     }
