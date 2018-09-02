@@ -43,13 +43,35 @@ class Solution {
 public:
     bool search(vector<int>& nums, int target) {
         int size = nums.size();
-        if (size <= 0) { return false; }
+        if (size <= 0) {
+            return false;
+        }
         int low = 0, high = size - 1;
         while (low < high) {
             int mid = (low + high) / 2;
-            if (target < nums[high]) {
-                if (nums[mid] )
+            if (target == nums[mid]) {
+                return true;
+            }
+            if (nums[mid] < nums[high]) {
+                if (target > nums[mid] && target <= nums[high]) {
+                    low = mid + 1;
+                }
+                else {
+                    high = mid - 1;
+                }
+            }
+            else if (nums[mid] > nums[high]){
+                if (target >= nums[low] && target < nums[mid]) {
+                    high = mid - 1;
+                }
+                else {
+                    low = mid + 1;
+                }
+            }
+            else {
+                high--;
             }
         }
+        return nums[low] == target;
     }
 };
