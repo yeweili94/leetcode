@@ -38,14 +38,13 @@ public:
             return nums[0];
         }
         for (int i = 1; i < size; i++) {
-            if (nums[i] == target){
+            if (cnt == 0) {
+                cnt = 1;
+                target = nums[i];
+            } else if (nums[i] == target){
                 cnt ++;
             } else {
                 cnt --;
-            }
-            if (cnt < 0) {
-                cnt = 1;
-                target = nums[i];
             }
         }
         return target;
