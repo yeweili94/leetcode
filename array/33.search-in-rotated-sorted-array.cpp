@@ -5,8 +5,8 @@
  *
  * algorithms
  * Medium (32.04%)
- * Total Accepted:    291.5K
- * Total Submissions: 909.8K
+ * Total Accepted:    289.2K
+ * Total Submissions: 902.7K
  * Testcase Example:  '[4,5,6,7,0,1,2]\n0'
  *
  * Suppose an array sorted in ascending order is rotated at some pivot unknown
@@ -38,33 +38,41 @@
 class Solution {
 public:
     int search(vector<int>& nums, int target) {
-       int size = nums.size();
-       if (size <= 0) {
-           return -1;
-       }
-       int low = 0, high = size - 1;
-       while (low < high) {
-           int mid = (low + high) / 2;
-           if (nums[mid] == target) {
-               return mid;
-           }
-           if (nums[mid] < nums[high]) {
-               if (target > nums[mid] && nums[high] >= target) {
-                   low = mid + 1;
-               } else {
-                   high = mid - 1;
-               }
-           } else {
-               if (target >= nums[low] && target < nums[mid]) {
-                    high = mid - 1;
-               } else {
-                   low = mid + 1;
-               }
-           }
-       }
-       if (nums[low] != target) {
-           return -1;
-       }
-       return low;
+        int size = nums.size();
+        if (size == 0) {
+            return -1;
+        }
+        int pivot = find_pivot(nums);
+        int off_set = size - pivot;
+        int low = pivot, high = pivot - 1;
+        int off_low = (low + off_set) % size, off_high = (high + off_set) % size;
+        while (off_low < off_high) {
+            int off_mid = (off_low + off_high) / 2;
+            if (nums[(off_mid - off_set + size) % size] > target) {
+                off_high = off_mid - 1;
+            } else if (nums[(off_mid - off_set + size)%size] == target){
+                return (off_mid - off_set + size) % size;
+            } else {
+                off_low = off_mid + 1;
+            }
+        }
+        if (nums[(off_low-off_set+size)%size] != target) {
+            return -1;
+        }
+        return (off_low - off_set + size) % size;
+    }
+
+    int find_pivot(const vector<int>& nums) {
+        int size = nums.size();
+        int low = 0, high = size - 1;
+        while (low < high) {
+            int mid = (low + high) / 2;
+            if (nums[mid] > nums[high]) {
+                low = mid + 1;
+            } else {
+                high = mid;
+            }
+        }
+        return low;
     }
 };

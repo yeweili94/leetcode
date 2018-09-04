@@ -4,7 +4,7 @@
  * https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/description/
  *
  * algorithms
- * Medium (31.93%)
+ * Medium (31.94%)
  * Total Accepted:    213.5K
  * Total Submissions: 668.4K
  * Testcase Example:  '[5,7,7,8,8,10]\n8'
@@ -34,11 +34,11 @@ public:
     vector<int> searchRange(vector<int>& nums, int target) {
         int size = nums.size();
         vector<int> ret(2, -1);
-        if (size < 1) {
+        if (size <= 0) {
             return ret;
         } 
+        //find left pos
         int low = 0, high = size - 1;
-        //find low boud
         while (low < high) {
             int mid = (low + high) / 2;
             if (nums[mid] < target) {
@@ -51,8 +51,8 @@ public:
             return ret;
         }
         ret[0] = low;
+        //find right pos
         high = size - 1;
-        //find up bound
         while (low < high) {
             int mid = (low + high + 1) / 2;
             if (nums[mid] > target) {
