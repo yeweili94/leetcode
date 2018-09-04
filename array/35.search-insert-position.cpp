@@ -6,7 +6,7 @@
  * algorithms
  * Easy (40.02%)
  * Total Accepted:    289.3K
- * Total Submissions: 722.9K
+ * Total Submissions: 722.8K
  * Testcase Example:  '[1,3,5,6]\n5'
  *
  * Given a sorted array and a target value, return the index if the target is
@@ -48,21 +48,22 @@ class Solution {
 public:
     int searchInsert(vector<int>& nums, int target) {
         int size = nums.size();
-        if (size <= 0) {
+        if (size == 0) {
             return 0;
         }
         int low = 0, high = size - 1;
         while (low < high) {
             int mid = (low + high) / 2;
-            if (nums[mid] < target) {
-                low = mid + 1;
+            if (nums[mid] > target) {
+                low = mid;
             } else {
-                high = mid;
+                high = mid - 1;
             }
         }
-        if (nums[low] >= target) {
+        if (target > nums[low]) {
+            return low + 1;
+        } else {
             return low;
         }
-        return low + 1;
     }
 };
