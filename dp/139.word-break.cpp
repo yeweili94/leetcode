@@ -51,6 +51,22 @@
 class Solution {
 public:
     bool wordBreak(string s, vector<string>& wordDict) {
-        
+        unordered_set<std::string> set;
+        for (const auto& elem : wordDict) {
+            set.insert(elem);
+        }
+        int size = s.size();
+        vector<bool> dp(size+1, false);       
+        dp[0] = true;
+        for (int i = 1; i <= s.size(); i++) {
+            for (int j = i - 1; j >= 0; j--) {
+                if (dp[j]) {
+                    if (set.find(s.substr(j, i - j)) != set.end()) {
+                        dp[i] = true;
+                    }
+                }
+            }
+        }
+        return dp[size];
     }
 };
