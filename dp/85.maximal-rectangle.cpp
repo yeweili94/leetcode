@@ -29,6 +29,31 @@
 class Solution {
 public:
     int maximalRectangle(vector<vector<char>>& matrix) {
-        
+       int row = matrix.size();
+       if (row == 0) return 0;
+       int col = matrix[0].size();
+       if (col == 0) return 0;
+       int ret = 0;
+       vector<int> h(col + 1, 0);
+       for (int r = 0; r < row; r++) {
+           for (int i = 0; i < col; i++) {
+               if (matrix[r][i] == '1') {
+                   h[i]++;
+               } else {
+                   h[i] = 0;
+               }
+           }
+           stack<int> st;
+           for (int j = 0; j <= col; j++) {
+               while (!st.empty() && h[j] <= h[st.top()]) {
+                   int top = st.top();
+                   st.pop();
+                   int w = st.empty() ? j : j - st.top() - 1;
+                   ret = max(ret, w * (h[top]));
+               }
+               st.push(j);
+           }
+       }
+       return ret;
     }
 };
