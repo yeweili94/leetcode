@@ -1,12 +1,14 @@
 /*
+ * @lc app=leetcode id=5 lang=cpp
+ *
  * [5] Longest Palindromic Substring
  *
  * https://leetcode.com/problems/longest-palindromic-substring/description/
  *
  * algorithms
- * Medium (25.63%)
- * Total Accepted:    358.5K
- * Total Submissions: 1.4M
+ * Medium (27.06%)
+ * Total Accepted:    531.5K
+ * Total Submissions: 2M
  * Testcase Example:  '"babad"'
  *
  * Given a string s, find the longest palindromic substring in s. You may
@@ -28,29 +30,35 @@
  * 
  * 
  */
+#include <bits/stdc++.h>
+using namespace std;
+
 class Solution {
 public:
     string longestPalindrome(string s) {
         int size = s.size();
-        pair<int,int> index(0,0);
-        string ret;
+        if (size <= 0) return "";
         vector<vector<int>> dp(size, vector<int>(size, 0));
+        int m = 0, n = 0;
         for (int i = 0; i < size; i++) {
             for (int j = 0; j <= i; j++) {
-                if (i == j) {
+                if (j == i) {
                     dp[j][i] = 1;
-                } else if (s[i] == s[j]) {
-                    if (i - j > 1 && dp[j+1][i-1] ) {
-                        dp[j][i] = dp[j+1][i-1] + 2;
-                    } else if (i - j == 1) {
+                } else if (s[j] != s[i]) {
+                    dp[j][i] = 0;
+                } else {
+                    if (i == j + 1) {
                         dp[j][i] = 2;
+                    } else {
+                        dp[j][i] = dp[j+1][i-1] ? dp[j+1][i-1] + 2 : 0;
                     }
                 }
-                if (dp[j][i] > ret.size()) {
-                    ret = s.substr(j, i - j + 1);
+                if (dp[j][i] > n-m+1) {
+                    m = j;
+                    n = i;
                 }
             }
         }
-        return ret;
+        return s.substr(m, n-m+1);
     }
 };
